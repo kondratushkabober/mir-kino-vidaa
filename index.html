@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мир Кино • Выбор зеркала</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    body {
+      margin: 0; padding: 0; background: #0a0a0a; color: #fff;
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh; text-align: center;
+    }
+    h1 {
+      font-size: 48px; margin-bottom: 50px; font-weight: 600;
+    }
+    .mirrors {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 30px; max-width: 1100px; width: 90%;
+    }
+    .card {
+      background: #1f1f1f; border-radius: 20px; padding: 40px 20px;
+      cursor: pointer; transition: all 0.3s; border: 4px solid transparent;
+      font-size: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .card:hover, .card:focus {
+      border-color: #00b4ff; transform: scale(1.05);
+      background: #2a2a2a;
+    }
+    .flag { font-size: 72px; margin-bottom: 20px; }
+    .name { font-size: 32px; margin: 10px 0; }
+    .desc { font-size: 22px; opacity: 0.8; }
+    .custom {
+      margin-top: 60px; font-size: 24px; padding: 20px 50px;
+      background: #333; border: none; border-radius: 50px; color: white;
+      cursor: pointer;
+    }
+    .custom:focus { background: #00b4ff; }
+  </style>
+</head>
+<body>
+  <h1>Выберите зеркало Мир Кино</h1>
+  
+  <div class="mirrors" id="mirrors">
+    <!-- заполнится JS -->
+  </div>
+
+  <button class="custom" onclick="customServer()">➕ Свой сервер</button>
+
+  <script>
+    const mirrors = [
+      { id: "ru", name: "🇷🇺 RU", url: "https://ru.mir-kino.pp.ru", desc: "Основное зеркало" },
+      { id: "eu", name: "🇪🇺 EU", url: "https://eu.mir-kino.pp.ru", desc: "Европейское" },
+      { id: "cf", name: "☁️ CF",   url: "https://cf.mir-kino.pp.ru", desc: "Самое быстрое" }
+    ];
+
+    function renderMirrors() {
+      const container = document.getElementById('mirrors');
+      container.innerHTML = mirrors.map(m => `
+        <div class="card" tabindex="0" onclick="selectMirror('${m.url}')" onkeydown="if(event.key==='Enter') selectMirror('${m.url}')">
+          <div class="flag">${m.name.split(' ')[0]}</div>
+          <div class="name">${m.name}</div>
+          <div class="desc">${m.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function selectMirror(baseUrl) {
+      localStorage.setItem('lastMirror', baseUrl);
+      // Перекидываем один раз на официальный Jellyfin Web выбранного сервера
+      window.location.href = baseUrl + '/web';
+    }
+
+    function customServer() {
+      const url = prompt('Введи полный адрес своего Jellyfin-сервера\n(например: https://myjellyfin.ru:8096)', 'https://');
+      if (url && url.startsWith('http')) {
+        localStorage.setItem('lastMirror', url);
+        window.location.href = url + (url.endsWith('/') ? '' : '/') + 'web';
+      }
+    }
+
+    // Авто-переход, если уже выбирали раньше
+    window.onload = () => {
+      const saved = localStorage.getItem('lastMirror');
+      if (saved) {
+        window.location.href = saved + '/web';
+      } else {
+        renderMirrors();
+      }
+    };
+  </script>
+</body>
+</html>
