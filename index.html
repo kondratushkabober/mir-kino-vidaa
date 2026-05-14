@@ -2,12 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Мир Кино • Лаунчер</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --card-width: 340px;
+      --card-padding: 42px 32px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
@@ -17,9 +27,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: clamp(30px, 5vw, 60px) clamp(20px, 4vw, 40px);
       position: relative;
       overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body::before {
@@ -34,8 +45,9 @@
 
     .header {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: clamp(40px, 6vh, 70px);
       z-index: 1;
+      max-width: 100%;
     }
 
     .launcher-badge {
@@ -44,50 +56,69 @@
       color: #ccc;
       padding: 8px 24px;
       border-radius: 50px;
-      font-size: 18px;
+      font-size: clamp(15px, 2.5vw, 18px);
       font-weight: 500;
       letter-spacing: 2px;
       margin-bottom: 16px;
     }
 
     h1 {
-      font-size: 52px;
+      font-size: clamp(38px, 7vw, 58px);
       font-weight: 700;
       margin-bottom: 14px;
       text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      line-height: 1.1;
     }
 
     .subtitle {
-      font-size: 22px;
+      font-size: clamp(18px, 3.2vw, 23px);
       opacity: 0.85;
-      max-width: 720px;
+      max-width: 820px;
       line-height: 1.45;
+      margin: 0 auto;
     }
 
     .cards {
-      display: flex;
-      gap: 35px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 38vw, 420px), 1fr));
+      gap: clamp(20px, 4vw, 40px);
       justify-content: center;
-      flex-wrap: wrap;
       z-index: 1;
       width: 100%;
-      max-width: 1280px;
+      max-width: 1480px;
     }
 
     .card {
       background: rgba(30, 30, 46, 0.95);
       border-radius: 28px;
-      width: 340px;
-      padding: 42px 32px;
+      padding: var(--card-padding);
       text-align: center;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 3px solid transparent;
+      border: 4px solid transparent;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
       cursor: pointer;
+      outline: none;
+      width: 100%;
+      height: 100%;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .card:hover, .card:focus {
-      transform: translateY(-15px) scale(1.05);
+    /* Усиленный фокус специально для VIDAA и пультов */
+    .card:focus,
+    .card:focus-visible,
+    .card:active {
+      transform: translateY(-12px) scale(1.04);
+      border-color: #00d4ff;
+      box-shadow: 0 35px 70px rgba(0, 212, 255, 0.45);
+      outline: 6px solid #00d4ff;
+      outline-offset: 8px;
+    }
+
+    .card:hover {
+      transform: translateY(-12px) scale(1.04);
       border-color: #00d4ff;
       box-shadow: 0 35px 70px rgba(0, 212, 255, 0.35);
     }
@@ -95,7 +126,14 @@
     .card.cf {
       border-color: #ffd700;
       background: linear-gradient(145deg, #2a261f, #3a3428);
-      box-shadow: 0 25px 50px rgba(255, 215, 0, 0.25);
+      box-shadow: 0 25px 50px rgba(255, 215, 0, 0.3);
+    }
+
+    .card.cf:focus,
+    .card.cf:focus-visible {
+      border-color: #ffd700;
+      outline: 6px solid #ffd700;
+      outline-offset: 8px;
     }
 
     .region-badge {
@@ -104,11 +142,11 @@
       justify-content: center;
       background: #1f1f2e;
       color: #fff;
-      font-size: 32px;
+      font-size: clamp(28px, 6vw, 42px);
       font-weight: 700;
-      width: 78px;
-      height: 78px;
-      line-height: 78px;
+      width: clamp(68px, 14vw, 88px);
+      height: clamp(68px, 14vw, 88px);
+      line-height: clamp(68px, 14vw, 88px);
       border-radius: 50%;
       margin-bottom: 28px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
@@ -120,28 +158,34 @@
     }
 
     .card-title {
-      font-size: 28px;
+      font-size: clamp(24px, 4.5vw, 32px);
       font-weight: 600;
       margin-bottom: 14px;
+      line-height: 1.2;
     }
 
     .card-desc {
-      font-size: 19px;
+      font-size: clamp(17px, 3vw, 20px);
       opacity: 0.85;
       line-height: 1.5;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
       min-height: 88px;
     }
 
     .launch-btn {
-      margin-top: 38px;
-      padding: 18px 56px;
-      font-size: 23px;
+      margin-top: auto;
+      padding: clamp(16px, 3vw, 22px) clamp(48px, 8vw, 64px);
+      font-size: clamp(20px, 4vw, 26px);
       font-weight: 700;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 320px;
     }
 
     .launch-btn.normal {
@@ -154,26 +198,98 @@
       color: #000;
     }
 
-    .launch-btn:hover, .launch-btn:focus {
-      transform: scale(1.1);
+    .launch-btn:focus,
+    .launch-btn:focus-visible {
+      outline: 6px solid #00d4ff;
+      outline-offset: 6px;
+      transform: scale(1.08);
     }
 
-    .reset-btn {
-      margin-top: 70px;
-      padding: 14px 40px;
-      background: rgba(255,255,255,0.08);
-      color: #bbb;
-      border: 2px solid #555;
-      border-radius: 50px;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 1;
+    .launch-btn:hover {
+      transform: scale(1.08);
     }
 
-    .reset-btn:hover {
-      background: #ff4444;
-      border-color: #ff4444;
-      color: white;
+    /* Адаптация под разные разрешения */
+
+    /* Мобильные устройства (телефоны) */
+    @media (max-width: 767px) {
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .card {
+        min-height: 340px;
+        padding: 36px 28px;
+      }
+      body {
+        padding: 30px 20px;
+      }
+    }
+
+    /* Планшеты */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .cards {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      }
+    }
+
+    /* Full HD (1920×1080) — VIDAA TV */
+    @media (min-width: 1024px) and (max-width: 2559px) {
+      :root {
+        --card-width: 380px;
+      }
+      .card {
+        min-height: 440px;
+        padding: 48px 36px;
+      }
+      .region-badge {
+        width: 92px;
+        height: 92px;
+        line-height: 92px;
+        font-size: 42px;
+      }
+    }
+
+    /* 4K (3840×2160) — VIDAA TV */
+    @media (min-width: 2560px) {
+      :root {
+        --card-width: 460px;
+      }
+      h1 {
+        font-size: 68px;
+      }
+      .subtitle {
+        font-size: 26px;
+      }
+      .card {
+        min-height: 520px;
+        padding: 56px 42px;
+        border-radius: 32px;
+      }
+      .region-badge {
+        width: 110px;
+        height: 110px;
+        line-height: 110px;
+        font-size: 52px;
+      }
+      .card-title {
+        font-size: 36px;
+      }
+      .launch-btn {
+        padding: 24px 72px;
+        font-size: 28px;
+      }
+    }
+
+    /* Дополнительная оптимизация для телевизоров VIDAA */
+    @media (min-width: 1024px) {
+      .card {
+        transition-duration: 0.25s; /* быстрее для пульта */
+      }
+      body {
+        justify-content: flex-start;
+        padding-top: 8vh;
+      }
     }
   </style>
 </head>
@@ -189,8 +305,6 @@
 
   <div class="cards" id="cards"></div>
 
-  <button class="reset-btn" onclick="resetMirror()">🔄 Сбросить выбор</button>
-
   <script>
     const mirrors = [
       { id: "eu", code: "EU", title: "Европа", desc: "Приложение для европейского региона.", url: "https://eu.mir-kino.pp.ru/" },
@@ -204,11 +318,11 @@
         const isCF = m.highlight;
         return `
           <div class="card ${isCF ? 'cf' : ''}" tabindex="0" onclick="selectMirror('${m.url}')" 
-               onkeydown="if(event.key==='Enter') selectMirror('${m.url}')">
+               onkeydown="if(event.key==='Enter' || event.key===' ') selectMirror('${m.url}')">
             <div class="region-badge">${m.code}</div>
             <div class="card-title">${m.title}</div>
             <div class="card-desc">${m.desc}</div>
-            <button class="launch-btn ${isCF ? 'cf' : 'normal'}">ЗАПУСТИТЬ</button>
+            <button class="launch-btn ${isCF ? 'cf' : 'normal'}" tabindex="-1">ЗАПУСТИТЬ</button>
           </div>
         `;
       }).join('');
@@ -217,13 +331,6 @@
     function selectMirror(url) {
       localStorage.setItem('lastMirror', url);
       window.location.href = url;
-    }
-
-    function resetMirror() {
-      if (confirm('Сбросить сохранённый регион и показать выбор снова?')) {
-        localStorage.removeItem('lastMirror');
-        window.location.reload();
-      }
     }
 
     window.onload = () => {
