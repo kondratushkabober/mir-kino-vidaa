@@ -68,23 +68,25 @@
 
     function selectMirror(baseUrl) {
       localStorage.setItem('lastMirror', baseUrl);
-      // Перекидываем один раз на официальный Jellyfin Web выбранного сервера
-      window.location.href = baseUrl + '/web';
+      // Теперь перекидываем БЕЗ /web — именно так работают зеркала Мир Кино
+      window.location.href = baseUrl;
     }
 
     function customServer() {
-      const url = prompt('Введи полный адрес своего Jellyfin-сервера\n(например: https://myjellyfin.ru:8096)', 'https://');
+      let url = prompt('Введи полный адрес своего Jellyfin-сервера\n(например: https://myjellyfin.ru)', 'https://');
       if (url && url.startsWith('http')) {
+        // Если сервер стандартный и требует /web — добавь его вручную в конце
+        if (!url.endsWith('/')) url += '/';
         localStorage.setItem('lastMirror', url);
-        window.location.href = url + (url.endsWith('/') ? '' : '/') + 'web';
+        window.location.href = url;
       }
     }
 
-    // Авто-переход, если уже выбирали раньше
+    // Авто-переход при следующем запуске
     window.onload = () => {
       const saved = localStorage.getItem('lastMirror');
       if (saved) {
-        window.location.href = saved + '/web';
+        window.location.href = saved;
       } else {
         renderMirrors();
       }
