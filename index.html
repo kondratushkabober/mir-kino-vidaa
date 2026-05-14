@@ -12,7 +12,9 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh; text-align: center;
     }
-    h1 { font-size: 48px; margin-bottom: 40px; font-weight: 600; }
+    h1 { 
+      font-size: 48px; margin-bottom: 50px; font-weight: 600; 
+    }
     .mirrors {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 30px; max-width: 1100px; width: 90%;
@@ -29,13 +31,11 @@
     .flag { font-size: 72px; margin-bottom: 20px; }
     .name { font-size: 32px; margin: 10px 0; }
     .desc { font-size: 22px; opacity: 0.8; }
-    .custom, .reset {
-      margin-top: 40px; font-size: 24px; padding: 18px 50px;
-      background: #333; border: none; border-radius: 50px; color: white;
+    .reset {
+      margin-top: 60px; font-size: 24px; padding: 18px 50px;
+      background: #444; border: none; border-radius: 50px; color: white;
       cursor: pointer;
     }
-    .reset { background: #ff4444; margin-top: 20px; }
-    .reset:focus { background: #ff0000; }
   </style>
 </head>
 <body>
@@ -43,14 +43,13 @@
   
   <div class="mirrors" id="mirrors"></div>
 
-  <button class="custom" onclick="customServer()">➕ Свой сервер</button>
-  <button class="reset" onclick="resetMirror()">🔄 Сбросить сохранённый выбор</button>
+  <button class="reset" onclick="resetMirror()">🔄 Сбросить выбор</button>
 
   <script>
     const mirrors = [
       { id: "ru", name: "🇷🇺 RU", url: "https://ru.mir-kino.pp.ru/", desc: "Основное зеркало" },
       { id: "eu", name: "🇪🇺 EU", url: "https://eu.mir-kino.pp.ru/", desc: "Европейское" },
-      { id: "cf", name: "☁️ CF",   url: "https://cf.mir-kino.pp.ru/", desc: "Самое быстрое" }
+      { id: "cf-eu", name: "☁️ CF-EU", url: "https://cf-eu.mir-kino.pp.ru/", desc: "Cloudflare EU (самое быстрое)" }
     ];
 
     function renderMirrors() {
@@ -66,30 +65,17 @@
 
     function selectMirror(baseUrl) {
       localStorage.setItem('lastMirror', baseUrl);
-      window.location.href = baseUrl;   // теперь с trailing slash
-    }
-
-    function customServer() {
-      let url = prompt('Введи полный адрес своего Jellyfin-сервера\n(например: https://myjellyfin.ru/)', 'https://');
-      if (url && url.startsWith('http')) {
-        if (!url.endsWith('/')) url += '/';
-        localStorage.setItem('lastMirror', url);
-        window.location.href = url;
-      }
+      window.location.href = baseUrl;
     }
 
     function resetMirror() {
-      localStorage.removeItem('lastMirror');
-      window.location.reload();
+      if (confirm('Сбросить сохранённый сервер и показать выбор снова?')) {
+        localStorage.removeItem('lastMirror');
+        window.location.reload();
+      }
     }
 
-    // Авто-переход + поддержка принудительного сброса
     window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('reset')) {
-        localStorage.removeItem('lastMirror');
-      }
-
       const saved = localStorage.getItem('lastMirror');
       if (saved) {
         window.location.href = saved;
