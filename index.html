@@ -22,6 +22,16 @@
       overflow: hidden;
     }
 
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
     .header {
       text-align: center;
       margin-bottom: 50px;
@@ -41,14 +51,14 @@
     }
 
     h1 {
-      font-size: 54px;
+      font-size: 52px;
       font-weight: 700;
       margin-bottom: 14px;
-      text-shadow: 0 4px 25px rgba(0,0,0,0.7);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.6);
     }
 
     .subtitle {
-      font-size: 23px;
+      font-size: 22px;
       opacity: 0.85;
       max-width: 720px;
       line-height: 1.45;
@@ -56,36 +66,36 @@
 
     .cards {
       display: flex;
-      gap: 40px;
+      gap: 35px;
       justify-content: center;
       flex-wrap: wrap;
       z-index: 1;
       width: 100%;
-      max-width: 1300px;
+      max-width: 1280px;
     }
 
     .card {
       background: rgba(30, 30, 46, 0.95);
       border-radius: 28px;
-      width: 360px;
-      padding: 48px 36px 42px;
+      width: 340px;
+      padding: 42px 32px;
       text-align: center;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 3px solid transparent;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
       cursor: pointer;
     }
 
     .card:hover, .card:focus {
-      transform: translateY(-18px) scale(1.06);
+      transform: translateY(-15px) scale(1.05);
       border-color: #00d4ff;
-      box-shadow: 0 40px 80px rgba(0, 212, 255, 0.35);
+      box-shadow: 0 35px 70px rgba(0, 212, 255, 0.35);
     }
 
     .card.cf {
       border-color: #ffd700;
-      background: linear-gradient(145deg, #2c2a22, #3f3a2b);
-      box-shadow: 0 30px 65px rgba(255, 215, 0, 0.3);
+      background: linear-gradient(145deg, #2a261f, #3a3428);
+      box-shadow: 0 25px 50px rgba(255, 215, 0, 0.25);
     }
 
     .region-badge {
@@ -94,52 +104,58 @@
       justify-content: center;
       background: #1f1f2e;
       color: #fff;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 700;
-      width: 88px;
-      height: 88px;
+      width: 78px;
+      height: 78px;
+      line-height: 78px;
       border-radius: 50%;
-      margin-bottom: 32px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      margin-bottom: 28px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
     .card.cf .region-badge {
       background: linear-gradient(135deg, #ffd700, #ffaa00);
-      color: #111;
+      color: #000;
     }
 
     .card-title {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .card-desc {
-      font-size: 20px;
-      opacity: 0.9;
-      line-height: 1.55;
-      min-height: 95px;
+      font-size: 19px;
+      opacity: 0.85;
+      line-height: 1.5;
+      min-height: 88px;
     }
 
     .launch-btn {
-      margin-top: 42px;
-      padding: 20px 62px;
-      font-size: 24px;
+      margin-top: 38px;
+      padding: 18px 56px;
+      font-size: 23px;
       font-weight: 700;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
     .launch-btn.normal {
-      background: #2a2a3a;
+      background: #333;
       color: #fff;
     }
 
     .launch-btn.cf {
       background: linear-gradient(90deg, #ffd700, #ffcc00);
-      color: #111;
+      color: #000;
+    }
+
+    .launch-btn:hover, .launch-btn:focus {
+      transform: scale(1.1);
     }
 
     .reset-btn {
@@ -149,7 +165,7 @@
       color: #bbb;
       border: 2px solid #555;
       border-radius: 50px;
-      font-size: 21px;
+      font-size: 20px;
       cursor: pointer;
       z-index: 1;
     }
