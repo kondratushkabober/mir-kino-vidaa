@@ -4,17 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мир Кино • Лаунчер</title>
-  
-  <!-- Finimalism — основной стиль, который ты дал -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tedhinklater/finimalism@main/Finimalism12.css">
-  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    :root {
-      --skip-hide-duration: 8s;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
@@ -29,43 +22,36 @@
       overflow: hidden;
     }
 
-    /* Логотип Мир Кино в шапке (как в твоём кастомном Jellyfin) */
-    .header-logo {
-      background-image: url('https://i.imgur.com/cNUYWM2.png') !important;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      width: 280px;
-      height: 120px;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      z-index: 1;
     }
 
     .launcher-badge {
       display: inline-block;
-      background: rgba(255,255,255,0.08);
-      color: #bbb;
-      padding: 8px 28px;
+      background: rgba(255,255,255,0.1);
+      color: #ccc;
+      padding: 8px 24px;
       border-radius: 50px;
-      font-size: 19px;
-      font-weight: 600;
-      letter-spacing: 3px;
-      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
     }
 
     h1 {
       font-size: 54px;
       font-weight: 700;
+      margin-bottom: 14px;
       text-shadow: 0 4px 25px rgba(0,0,0,0.7);
-      margin-bottom: 12px;
     }
 
     .subtitle {
       font-size: 23px;
-      opacity: 0.9;
-      max-width: 760px;
-      line-height: 1.5;
-      text-align: center;
+      opacity: 0.85;
+      max-width: 720px;
+      line-height: 1.45;
     }
 
     .cards {
@@ -73,17 +59,16 @@
       gap: 40px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-top: 60px;
-      z-index: 2;
+      z-index: 1;
       width: 100%;
       max-width: 1300px;
     }
 
     .card {
-      background: rgba(28, 28, 42, 0.95);
+      background: rgba(30, 30, 46, 0.95);
       border-radius: 28px;
       width: 360px;
-      padding: 48px 36px 40px;
+      padding: 48px 36px 42px;
       text-align: center;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 3px solid transparent;
@@ -94,7 +79,7 @@
     .card:hover, .card:focus {
       transform: translateY(-18px) scale(1.06);
       border-color: #00d4ff;
-      box-shadow: 0 40px 80px rgba(0, 212, 255, 0.4);
+      box-shadow: 0 40px 80px rgba(0, 212, 255, 0.35);
     }
 
     .card.cf {
@@ -157,53 +142,27 @@
       color: #111;
     }
 
-    /* Блок с QR-кодом и текстом (точно как в твоём кастомном Jellyfin) */
-    .qr-footer {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(20, 23, 35, 0.97) 
-                  url('https://i.postimg.cc/L8DYR0cV/Bez-nazvania.png') 
-                  no-repeat center bottom / 110px;
-      color: #c8d6f5;
-      padding: 22px 32px 138px 32px;
-      border-radius: 22px;
-      font-size: 1.1rem;
-      line-height: 1.45;
-      text-align: center;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
-      border: 2px solid rgba(120, 175, 255, 0.5);
-      max-width: 82%;
-      white-space: pre-line;
-      z-index: 10000;
-      pointer-events: none;
-    }
-
-    .qr-footer:hover {
-      background-color: rgba(28, 34, 55, 0.98);
-      border-color: #8eb8ff;
-    }
-
     .reset-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 40px;
-      padding: 14px 36px;
-      background: rgba(255,255,255,0.1);
+      margin-top: 70px;
+      padding: 14px 40px;
+      background: rgba(255,255,255,0.08);
       color: #bbb;
       border: 2px solid #555;
       border-radius: 50px;
       font-size: 21px;
       cursor: pointer;
-      z-index: 9999;
+      z-index: 1;
+    }
+
+    .reset-btn:hover {
+      background: #ff4444;
+      border-color: #ff4444;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <div class="header-logo"></div>
-
-  <div style="text-align: center; z-index: 2;">
+  <div class="header">
     <div class="launcher-badge">LAUNCHER В МИР-КИНО</div>
     <h1>Выберите регион</h1>
     <p class="subtitle">
@@ -213,14 +172,6 @@
   </div>
 
   <div class="cards" id="cards"></div>
-
-  <!-- QR-блок точно как в твоём Jellyfin -->
-  <div class="qr-footer">
-    Для регистрации<br>
-    отсканируйте QR-код или перейдите по<br>
-    ссылке:<br>
-    <strong>mir-kino.pp.ru</strong>
-  </div>
 
   <button class="reset-btn" onclick="resetMirror()">🔄 Сбросить выбор</button>
 
