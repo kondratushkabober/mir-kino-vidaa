@@ -2,196 +2,181 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Мир Кино • Лаунчер</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: linear-gradient(135deg, #0f0f1e, #1a1a2e);
+      background: linear-gradient(135deg, #0a0a14, #1a1a2e);
       color: #ffffff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 40px 20px 30px; /* уменьшено */
-      position: relative;
+      padding: 40px 20px;
       overflow: hidden;
-    }
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 21px);
-      opacity: 0.15;
-      pointer-events: none;
-      z-index: 0;
     }
 
     .header {
       text-align: center;
       margin-bottom: 50px;
-      z-index: 1;
-      max-width: 100%;
     }
+
     .launcher-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.1);
-      color: #ccc;
-      padding: 6px 18px;
+      background: rgba(255,255,255,0.12);
+      color: #ddd;
+      padding: 8px 22px;
       border-radius: 50px;
       font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: inline-block;
     }
-    h1 {
-      font-size: 32px;        /* было 62 → 50% */
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      line-height: 1.1;
-    }
-    .subtitle {
-      font-size: 17px;        /* было 26 */
-      opacity: 0.85;
-      max-width: 620px;
-      line-height: 1.45;
-      margin: 0 auto;
-    }
+
+    h1 { font-size: 34px; font-weight: 700; margin-bottom: 10px; }
+    .subtitle { font-size: 17px; opacity: 0.9; max-width: 580px; }
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); /* было 420 */
-      gap: 30px;              /* было 50 */
-      justify-content: center;
-      z-index: 1;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
       width: 100%;
-      max-width: 900px;       /* уменьшено */
+      max-width: 960px;
     }
 
     .card {
-      background: rgba(30, 30, 46, 0.95);
-      border-radius: 20px;    /* было 32 */
-      padding: 32px 24px;     /* было 52px 40px */
+      background: rgba(28, 28, 45, 0.98);
+      border: 4px solid transparent;
+      border-radius: 26px;
+      padding: 40px 30px;
       text-align: center;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 3px solid transparent;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-      cursor: pointer;
-      outline: none;
-      min-height: 260px;      /* было 460 */
+      min-height: 300px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.65);
     }
 
-    /* Фокус для VIDAA пульта */
-    .card:focus,
-    .card:focus-visible,
-    .card:active {
-      transform: translateY(-12px) scale(1.06);
-      border-color: #00d4ff;
-      box-shadow: 0 30px 60px rgba(0, 212, 255, 0.5);
-      outline: 6px solid #00d4ff;
-      outline-offset: 8px;
-    }
-    .card:hover {
-      transform: translateY(-10px) scale(1.04);
-      border-color: #00d4ff;
+    /* ========== ФОКУС ДЛЯ ПУЛЬТА ========== */
+    .card:focus {
+      border-color: #00f0ff;
+      box-shadow: 0 0 0 10px rgba(0, 240, 255, 0.45);
+      transform: scale(1.09) translateY(-10px);
+      outline: none;
+      z-index: 10;
     }
 
     .region-badge {
-      display: inline-flex;
+      width: 88px;
+      height: 88px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      background: #1f1f2e;
-      color: #fff;
-      font-size: 32px;        /* было 48 */
+      background: #1f1f35;
+      font-size: 38px;
       font-weight: 700;
-      width: 72px;            /* было 110 */
-      height: 72px;
-      line-height: 72px;
       border-radius: 50%;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      margin-bottom: 26px;
     }
 
-    .card-title {
-      font-size: 22px;        /* было 36 */
-      font-weight: 600;
-      margin-bottom: 12px;
-      line-height: 1.2;
-    }
-    .card-desc {
-      font-size: 15px;        /* было 23 */
-      opacity: 0.85;
-      line-height: 1.5;
-      margin-bottom: 28px;
-      flex-grow: 1;
-    }
+    .card-title { font-size: 25px; font-weight: 600; margin-bottom: 14px; }
+    .card-desc { font-size: 16.5px; line-height: 1.45; opacity: 0.88; margin-bottom: 34px; flex-grow: 1; }
 
     .launch-btn {
-      padding: 14px 50px;
-      font-size: 18px;        /* было 28 */
+      padding: 18px 60px;
+      font-size: 20px;
       font-weight: 700;
+      background: #00d4ff;
+      color: #000;
       border: none;
       border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      width: 100%;
-      max-width: 240px;
     }
 
-    .launch-btn:focus,
-    .launch-btn:focus-visible {
-      outline: 6px solid #00d4ff;
-      outline-offset: 6px;
-      transform: scale(1.08);
-    }
-
-    /* Дополнительная оптимизация для VIDAA */
-    @media (min-width: 2560px) {
-      .cards { gap: 35px; }
-    }
+    .launch-btn:focus { outline: 6px solid white; transform: scale(1.06); }
   </style>
 </head>
 <body>
   <div class="header">
-    <div class="launcher-badge">LAUNCHER В МИР-КИНО</div>
+    <div class="launcher-badge">МИР КИНО • LAUNCHER</div>
     <h1>Выберите сервер</h1>
-    <p class="subtitle">
-      Лаунчер быстрого перехода между серверами для приложения Мир-Кино.
-    </p>
+    <p class="subtitle">Управляйте пультом: ← → ↑ ↓ и OK</p>
   </div>
+
   <div class="cards" id="cards"></div>
 
   <script>
     const mirrors = [
-      { id: "ru", code: "RU", title: "РФ", desc: "Сервер для Российской Федерации.", url: "https://ru.mir-kino.pp.ru/" },
-      { id: "eu", code: "EU", title: "Европа", desc: "Сервер для Европейского региона.", url: "https://eu.mir-kino.pp.ru/" },
-      { id: "cf", code: "CF", title: "CloudFlare CDN", desc: "Сервер через CloudFlare", url: "https://cf-eu.mir-kino.pp.ru/" }
+      { code: "RU", title: "Российский сервер", desc: "Основной сервер для РФ и СНГ", url: "https://ru.mir-kino.pp.ru/" },
+      { code: "EU", title: "Европейский сервер", desc: "Оптимально для Европы", url: "https://eu.mir-kino.pp.ru/" },
+      { code: "CF", title: "CloudFlare CDN", desc: "Самый быстрый вариант", url: "https://cf-eu.mir-kino.pp.ru/" }
     ];
+
+    let currentIndex = 0;
+    const cardsArray = [];
 
     function renderCards() {
       const container = document.getElementById('cards');
-      container.innerHTML = mirrors.map(m => `
-        <div class="card" tabindex="0" onclick="selectMirror('${m.url}')"
-             onkeydown="if(event.key==='Enter' || event.key===' ') selectMirror('${m.url}')">
-          <div class="region-badge">${m.code}</div>
-          <div class="card-title">${m.title}</div>
-          <div class="card-desc">${m.desc}</div>
-          <button class="launch-btn" tabindex="-1">ЗАПУСТИТЬ</button>
-        </div>
-      `).join('');
+      container.innerHTML = '';
+
+      mirrors.forEach((m, index) => {
+        const cardHTML = `
+          <div class="card" tabindex="0" data-index="${index}">
+            <div class="region-badge">${m.code}</div>
+            <div class="card-title">${m.title}</div>
+            <div class="card-desc">${m.desc}</div>
+            <button class="launch-btn" tabindex="-1">ЗАПУСТИТЬ</button>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', cardHTML);
+      });
+
+      // Собираем все карточки
+      document.querySelectorAll('.card').forEach((card, i) => {
+        cardsArray[i] = card;
+        card.addEventListener('click', () => selectMirror(mirrors[i].url));
+        
+        card.addEventListener('keydown', (e) => {
+          handleKey(e, i);
+        });
+      });
+
+      // Фокус на первую карточку
+      if (cardsArray[0]) cardsArray[0].focus();
+    }
+
+    function handleKey(e, index) {
+      let nextIndex = index;
+
+      switch (e.key) {
+        case 'ArrowRight':
+          nextIndex = (index + 1) % cardsArray.length;
+          break;
+        case 'ArrowLeft':
+          nextIndex = (index - 1 + cardsArray.length) % cardsArray.length;
+          break;
+        case 'ArrowDown':
+          nextIndex = Math.min(index + 2, cardsArray.length - 1); // прыжок на следующую строку
+          break;
+        case 'ArrowUp':
+          nextIndex = Math.max(index - 2, 0);
+          break;
+        case 'Enter':
+        case ' ':
+          selectMirror(mirrors[index].url);
+          return;
+      }
+
+      if (nextIndex !== index && cardsArray[nextIndex]) {
+        e.preventDefault();
+        cardsArray[nextIndex].focus();
+      }
     }
 
     function selectMirror(url) {
